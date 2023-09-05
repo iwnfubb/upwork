@@ -27,12 +27,13 @@ class ATC_Platform:
 
     
     def get_next_level_text( self,  list_of_text : list, level : Level):
+        self.web_driver.execute_script("window.scrollTo(0, 0);")        
         for item in list_of_text:
-            self.web_driver.execute_script("window.scrollTo(0, 0);")        
             max_try = 3
             for x in range(0, max_try):
                 try:
                     pointer = self.web_driver.find_element(By.XPATH, "//*[text()='" + item + "']/preceding-sibling::span[@class='handle']" )
+                    self.web_driver.execute_script("arguments[0].scrollIntoView();", pointer)
                     time.sleep(0.5)
                     self.web_driver.execute_script("arguments[0].click();", pointer)
                     time.sleep(0.5)
@@ -40,7 +41,7 @@ class ATC_Platform:
 
                 except selenium.common.exceptions.NoSuchElementException:
                     print ("%s not found ", item)
-                    self.web_driver.execute_script("window.scrollTo(0, document.body.scrollHeight/2);")
+                    time.sleep(1)   
                     continue
                 except selenium.common.exceptions.StaleElementReferenceException: 
                     print ("%s StaleElementReferenceException ", item)
