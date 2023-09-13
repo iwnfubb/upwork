@@ -22,7 +22,8 @@ class ATC_Platform:
 
 
     def get_first_level_text (self):
-        text = self.web_driver.find_elements(By.XPATH, "//tr[contains(@class, 'classA')]")
+        #text = self.web_driver.find_elements(By.XPATH, "//tr[contains(@class, 'classA')]")
+        text = self.web_driver.find_elements(By.CSS_SELECTOR, "tr.classA")
         return list (  filter ( lambda x : x != "", list(  map(lambda x: x.text, text))))
 
     
@@ -32,6 +33,7 @@ class ATC_Platform:
             max_try = 3
             for x in range(0, max_try):
                 try:
+                    
                     pointer = self.web_driver.find_element(By.XPATH, "//*[text()='" + item + "']/preceding-sibling::span[@class='handle']" )
                     self.web_driver.execute_script("arguments[0].scrollIntoView();", pointer)
                     time.sleep(0.5)
@@ -47,10 +49,9 @@ class ATC_Platform:
                     print ("%s StaleElementReferenceException ", item)
                     continue
             
-        text = self.web_driver.find_elements(By.XPATH, "//tr[contains(@class, '"+ level.value + "')]")
+        #text = self.web_driver.find_elements(By.XPATH, "//tr[contains(@class, '"+ level.value + "')]")
+        text = self.web_driver.find_elements(By.CSS_SELECTOR, "tr."+ level.value)
         return list (  filter ( lambda x : x != "", list(  map(lambda x: x.text, text))))
-
-
 
     def close(self):
         self.web_driver.close()
